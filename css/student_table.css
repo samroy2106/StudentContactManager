@@ -1,0 +1,18 @@
+#student_table {
+    max-width: 65%;
+    margin: auto;
+}
+
+#add {
+    position: relative;
+    left: 90%;
+}
+
+input:read-only {color: grey;}
+
+.far {
+    height: 10px;
+    width: 10px;
+    padding-left: 13px;
+    padding-right: 7px;
+}

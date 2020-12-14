@@ -1,0 +1,59 @@
+SQL Used:
+
+Table of people with ID and first_name:
+DROP TABLE IF EXISTS people;
+
+CREATE TABLE people(id int NOT NULL AUTO_INCREMENT PRIMARY KEY, first_name varchar(30) NOT NULL);
+
+INSERT INTO people(first_name)
+    VALUES ('Steven'), ('Fernando'), ('Javier'), ('Mohammed'), ('Sadio'), ('Takumi'), ('George'), ('Jordan'), ('Alex'), ('Sam');
+
+Insert new Student record:
+INSERT INTO students(sid, firstname, lastname, address, major, gender_id, comments)
+    VALUES ('S012345678', 'Sam', 'Roy', '123, ABC Street, Victoria BC', 'Computer Science', 3, 'example'), (...), (...);
+
+Update on SID:
+UPDATE students SET firstname='$firstname', lastname='$lastname', address='$address', major='$major', gender=_id'$gender', comments='$comments' WHERE sid='$sid'
+
+Gender table:
+CREATE TABLE gender(id int NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(15) NOT NULL, description varchar(25));
+
+Insert 10 genders into the gender table, add descriptions for a few:
+INSERT INTO gender(name, description) VALUES('Male', 'Cisgender man'), ('Female', 'Cisgender woman');
+
+INSERT INTO gender(name, description)
+    VALUES('Trans Male', 'Transgender man'), ('Trans Female', 'Transgender woman'),
+            ('Non-binary', 'Not exclusively masculine or feminine'), ('Pangender', 'Gender identity encompassing all genders at once'),
+            ('Two-spirit', 'Traditional Native third gender'), ('Gender Fluid', 'Gender is not subject to cofinement'),
+            ('Genderqueer', 'Identifies with neither, both or a combination of male and female'), ('Other', 'Something other than listed options');
+
+Join students and gender on student.gender = gender.name:
+SELECT * FROM students
+LEFT JOIN gender ON students.gender_id = gender.id limit 10;
+
+SELECT sid, firstname, lastname, address, major, gender_id as gender, comments FROM students
+LEFT JOIN gender ON students.gender_id = gender.id limit 10;
+
+Table of students with (id, sid, primary key pair):
+CREATE TABLE students(id int NOT NULL AUTO_INCREMENT PRIMARY KEY, sid varchar(10) NOT NULL,
+                      firstname varchar(20) NOT NULL,
+                      lastname varchar(20) NOT NULL,
+                      address varchar(50) NOT NULL,
+                      major varchar(20) NOT NULL,
+                      gender_id int NOT NULL,
+                      comments text(250));
+
+Create view for displaying table:
+CREATE VIEW student_view AS (SELECT students.id as id, sid, firstname, lastname, address, major, gender.name as gender, comments FROM students
+    LEFT JOIN gender ON students.gender_id  = gender.id);
+
+Statement to count all occurrences of a gender in the student table:
+SELECT COUNT(id) as gender_instances FROM students WHERE gender_id = current_id;
+
+Create log table
+CREATE TABLE student_actions_log(id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                                 action_time timestamp DEFAULT CURRENT_TIMESTAMP,
+                                 requester varchar(25),
+                                 ip_addr int unsigned,
+                                 action varchar(15),
+                                 details varchar(60));
